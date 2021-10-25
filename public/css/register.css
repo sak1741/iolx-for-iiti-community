@@ -1,0 +1,69 @@
+body{
+    text-align: center;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+}
+h1,a{
+    font-family: 'Playfair Display', serif;
+}
+#title{
+    padding:20px;
+}
+.outer{
+    background-color: #F0D9FF;
+    height: 200px;
+}
+.inner{
+    align-items: center;
+    background-color: #F3F1F5;
+    height: 500px;
+    padding:10px 50px 0px;
+    margin-left: 30px;
+    width: 500px;
+    margin-bottom: 100px;
+    text-align: center;
+    
+}
+.UserID{
+    padding:8px;
+    margin-bottom: 0px;
+}
+.main{
+    padding: 10px 150px;
+    padding-left: 200px;
+    height: 500px;
+    width: 1000px;
+}
+#text{
+    margin: 20px;
+    font-size: 20px;
+    
+}
+.but{
+    margin-left: 10px;
+    margin-top: 2px;
+    margin-bottom: 10px;
+}
+.icons{
+    font-size: 30px;
+}
+.msg{
+    padding: 15px 0px;
+    font-size: 20px;
+}
+#logo{
+    margin-left: 10px;
+    margin-right: 5px;
+    width: 35px;
+    height: 35px;
+}
+.img{
+    height: 100px;
+    width: 100px;
+}
+a{
+    color: black;
+}
+.first{
+    padding-top: 30px;
+}

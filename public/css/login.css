@@ -1,0 +1,70 @@
+body{
+    
+    text-align: center;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+}
+#title{
+    padding:40px;
+}
+.outer{
+    background-color: #F0D9FF;
+    height: 200px;
+}
+.inner{
+    align-items: center;
+    background-color: #F3F1F5;
+    height: 330px;
+    padding:10px 50px ;
+    padding-bottom: 0px;
+    margin-left: 30px;
+    width: 500px;
+    margin-bottom: 100px;
+}
+.UserID{
+    padding:10px;
+    margin: 0px;
+}
+.UserPassword{
+    padding:10px;
+    margin:0px
+}
+.main{
+    padding: 10px 150px;
+    padding-left: 200px;
+    height: 500px;
+    width: 1000px;
+}
+#text{
+    margin: 20px;
+    font-size: 20px;
+    
+}
+.but{
+   
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+.icons{
+    font-size: 30px;
+}
+.msg{
+    padding: 20px 0px;
+    font-size: 20px;
+}
+#logo{
+    margin-left: 10px;
+    margin-right: 5px;
+    width: 35px;
+    height: 35px;
+}
+.img{
+    height: 100px;
+    width: 100px;
+}
+a{
+    color: black;
+}
+h1,a{
+    font-family: 'Playfair Display', serif;
+}
