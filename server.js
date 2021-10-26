@@ -41,16 +41,17 @@ app.post("/register",function(req,res){
     }
     else{
         var value=[[name,email,address,mobile,password]]
-        con.query("SELECT * from user where email=?",[email],function(req,result){
-            console.log(result);
-            if(result=="[]"){
+        con.query("SELECT * from user where email=?",[email],function (err, result, fields){
+            if(err) throw err;
+            if(result.length==0){
                 var q="INSERT INTO user (name, email,address,phoneNo,password) VALUES ?";
                 con.query(q,[value],function (err) {
                 if (err) {throw err;}
-                console.log("rqugwfjb");
+                console.log("success");
                 })
             }
             else{
+                console.log(result);
                 console.log("email already in use");
             }
         })
@@ -59,4 +60,18 @@ app.post("/register",function(req,res){
 })
 app.get("/login",function(req,res){
     res.sendFile(__dirname+"/frontend/login.html");
+})
+app.post("/login",function(req,res){
+    var email=req.body.email;
+    var password=req.body.password;
+    con.query("SELECT * from user where email=? AND password=?",[email,password],function(err,result){
+        if(err) throw err;
+        if(result.length==1){
+            console.log(result);
+            console.log("success");
+        }
+        else{
+            console.log("invalid");
+        }
+    })
 })

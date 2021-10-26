@@ -21,13 +21,13 @@
     <div class="container main">
         <div class=" inner" >
           <div class="msg">Login</div>
-              <form action="{{ url_for('login') }}" method="post">
+              <form action="/login" method="post">
                 
                 <div class="mb-3 row UserID">
-                  <label  class="col-sm-2 col-form-label"><i class="fas fa-user icons"></i>
+                  <label  class="col-sm-2 col-form-label"><i class="fas fa-envelope icons"></i>
                   </label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" placeholder="User Id" name="username">
+                    <input type="text" class="form-control" placeholder="Email" name="email">
                   </div>
                 </div>
                 <div class="mb-3 row UserPassword">
