@@ -6,7 +6,7 @@ app.listen(3000,()=>{
     console.log("started");
 })
 app.set('view engine', 'ejs');
-var helper=require("./helper")
+
 const mysql=require("mysql2");
 var con = mysql.createConnection({
     host: "localhost",
@@ -49,7 +49,8 @@ app.get("/sell",function(req,res){
 app.get("/form",function(req,res){
     res.render("sellForm",{name:name,id:id,products:products});})
 app.post("/form",function(req,res){
-    var name=req.body.title;
+    products=[];
+    var n=req.body.title;
     var desc=req.body.desc;
     var price=req.body.price;
     var pic=req.body.pic;
@@ -59,15 +60,27 @@ app.post("/form",function(req,res){
         res.redirect("/login")
     }
     else{
-        product=[[name,price,"whdgs",id]];
+        product=[[n,price,"whdgs",id]];
         addProduct(product);
-        values={"name":name,"price":price,"userId":id};
+        values={"name":n,"price":price,"userId":id,"sellerName":name};
         products.push(values);
         res.render("sellForm",{name:name,id:id,products:products});
     }
     })
 app.get("/register",function(req,res){
+    if(id!=0){
+        res.render("home",{id:0,name:""})
+    }
     res.sendFile(__dirname+"/frontend/Registration.html");
+})
+app.get("/buy",function(req,res){
+    var all=[];
+    con.query("SELECT * FROM listing INNER JOIN user ON listing.sellerID=user.id;",function(err,result){
+        if(err) throw err;
+        all=result;
+        res.render("buyer",{all:all,name:name,id:id});
+    })
+    
 })
 app.post("/register",function(req,res){
     
