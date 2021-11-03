@@ -3,25 +3,23 @@ const app=express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.listen(3000,()=>{
-    console.log("started");
+    console.log("Server online");
 })
 app.set('view engine', 'ejs');
-
 const mysql=require("mysql2");
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "PSALG@2020"
   });
-  
-  con.connect(function(err) {
+con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
 });
 con.query("use iolx", function (err, result) {
     if (err) throw err;
     console.log("Database connected");
-  });
+});
 var products=[];
 var name="";
 var id=0;
@@ -33,14 +31,13 @@ function addProduct(product){
 }
 function deleteProduct(productName,price,id){
     console.log("b");
-    // con.query("DELETE from listing WHERE productName=? AND sellerID=? AND price=? ",[productName,id,price],function(err,result){
-    //     if(err) throw err;
-    //     console.log(result);
-    // })
+    con.query("DELETE from listing WHERE productName=? AND sellerID=? AND price=? ",[productName,id,price],function(err,result){
+        if(err) throw err;
+        console.log(result);
+    })
 }
 app.use(express.static("public"))
 app.get("/",function(req,res){
-    // console.log(__dirname)
     res.render("home",{name:name,id:id});
 })
 app.get("/sell",function(req,res){
@@ -49,21 +46,30 @@ app.get("/sell",function(req,res){
 app.get("/form",function(req,res){
     res.render("sellForm",{name:name,id:id,products:products});})
 app.post("/form",function(req,res){
-    products=[];
     var n=req.body.title;
     var desc=req.body.desc;
     var price=req.body.price;
     var pic=req.body.pic;
-    // deleteProduct(name,price,id);
+    
     if(id==0){
         console.log("not logged in");
         res.redirect("/login")
     }
     else{
-        product=[[n,price,"whdgs",id]];
-        addProduct(product);
-        values={"name":n,"price":price,"userId":id,"sellerName":name};
-        products.push(values);
+        
+        console.log(req);
+        if(req.body.add=="Add"){
+            var product=[[n,price,"whdgs",id]];
+            values={"name":n,"price":price,"userId":id,"sellerName":name};
+            products.push(values);
+            
+            addProduct(product);
+        }
+        else{
+            var n=req.body.delete;
+            deleteProduct(products[n].name,products[n].price,products[n].userId);
+            products.splice(n);
+        }   
         res.render("sellForm",{name:name,id:id,products:products});
     }
     })
@@ -71,7 +77,7 @@ app.get("/register",function(req,res){
     if(id!=0){
         res.render("home",{id:0,name:""})
     }
-    res.sendFile(__dirname+"/frontend/Registration.html");
+    res.render("register",{msg:"Registration"});
 })
 app.get("/buy",function(req,res){
     var all=[];
@@ -84,14 +90,14 @@ app.get("/buy",function(req,res){
 })
 app.post("/register",function(req,res){
     
-    var name=req.body.name;
+    var fname=req.body.fName;
+    var sname=req.body.sName;
     var mobile=req.body.mobile_no;
     var email=req.body.email;
     var address=req.body.address;
     var password=req.body.password;
-    if(name==""|| mobile=="" || email==""||address==""|| password==""){
-        console.log("Incomplete form");
-        res.redirect("/register");
+    if(fname==""||sname==""|| mobile=="" || email==""||address==""|| password==""){
+        res.render("register",{msg:"Incomplete form"})
     }
     else{
         var value=[[name,email,address,mobile,password]]
@@ -106,16 +112,14 @@ app.post("/register",function(req,res){
                 })
             }
             else{
-                console.log(result);
-                console.log("email already in use");
-                res.redirect("/register");
+                res.render("register",{msg:"Email already in use"});
             }
         })
     }
    
 })
 app.get("/login",function(req,res){
-    res.sendFile(__dirname+"/frontend/login.html");
+    res.render("login",{msg:"Login"});
 })
 app.post("/login",function(req,res){
     var email=req.body.email;
@@ -123,14 +127,12 @@ app.post("/login",function(req,res){
     con.query("SELECT * from user where email=? AND password=?",[email,password],function(err,result){
         if(err) throw err;
         if(result.length==1){
-            console.log("success");
             name=result[0].name;
             id=result[0].id;
             res.render("home",{name:name,id:id,products:products});
         }
         else{
-            console.log("invalid");
-            res.redirect("/login")
+            res.render("login",{msg:"Email and password don't match"})
         }
     })
 })

@@ -39,10 +39,10 @@
                             <input type="number" class="form-control f" name="price"  rows="3">
                             <label for="text">Add pic of the product</label>
                             <input type="file" class="form-control f" name="pic"  rows="3">
-                            <button  class="btn btn-primary" >Add to list</button>
-                            <!-- <button   class="btn btn-primary">Clear list</button> -->
+                            <button  class="btn btn-primary" name="add" value="Add">Add to list</button>
                             
-                        </form>
+                            
+                        
                         <div id="items" class="my-4">
                             <h2 >Your Items</h2>
                             <table class="table">
@@ -51,7 +51,7 @@
                                     <th scope="col">SNo</th>
                                     <th scope="col">Product</th>
                                     <th scope="col">Price</th> 
-                                    <!-- <th scope="col">Actions</th>  -->
+                                    <th scope="col">Actions</th> 
                                   </tr>
                                 </thead>
                                 <tbody id="tableBody">
@@ -61,8 +61,10 @@
                                     <tr class="">
                                         <th scope="row"><%=i+1%></th>
                                         <td class=""><%=products[i].name%></td>
-                                        <td><%=products[i].price%></td> 
-                                        <!-- <td><button class="btn btn-sm btn-primary">Delete</button></td>  -->
+                                        <td><%=products[i].price%></td>
+                                        
+                                        <td><button class="btn btn-sm btn-primary" name="delete" value="<%=i%>" >Delete</button></td> 
+                                      </form>   
                                     </tr>
                                   <%}%>
                                 </tbody>
