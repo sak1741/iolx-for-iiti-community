@@ -6,13 +6,29 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="#">
     <title>Hello, world!</title>
-    <link rel="stylesheet" href="css./sell.css">
+    <link rel="stylesheet" href="css/sell.css">
 </head>
     <body class="bg">
-      <%-include("nav")-%>
-          <div class="container" style="padding: 30px;">
+      <div class="banner">
+      <div class="navbar">
+        <img src="image/iolx (2) (1).png" class="logo">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/buy">Buyer</a></li>
+            <li><a href="/sell">Seller</a></li>
+            <%if(id!=0){%>
+              <li><a href="/profile">Profile</a></li>
+              <li><a href="/register">Logout</a></li>
+            <%}else{%>
+              <li><a href="/register">Sign Up</a></li>
+              <li><a href="/login">Sign In</a></li>
+            <%}%>
+        </ul>
+      </div>
+      </div>
+          <div class="content" style="padding: 30px;">
               <h3 class="">If you want to sell your goods then fill the form shown below</h3><br>
- <a href="/form">   <button type="submit" class="btn btn-primary btn-lg">FORM</button></a>
+ <a href="/form">   <button type="submit" class="btn btn-primary btn-lg"> FORM</button></a>
 
           </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>

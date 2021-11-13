@@ -2,7 +2,6 @@ const { json } = require("body-parser");
 const e = require("express");
 const express=require("express");
 const multer  = require('multer')
-
 const multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, "public");
@@ -11,19 +10,19 @@ const multerStorage = multer.diskStorage({
       const ext = file.mimetype.split("/")[1];
       cb(null, `files/admin-${file.fieldname}-${Date.now()}.${ext}`);
     },
-  });
-  const multerFilter = (req, file, cb) => {
+});
+const multerFilter = (req, file, cb) => {
     if (file.mimetype.split("/")[1] === "jpeg") {
       cb(null, true);
     } else {
         console.log(file.mimetype.split("/")[1])
       cb(new Error("Not a jpeg File!!"), false);
     }
-  };
-  const upload = multer({
+};
+const upload = multer({
     storage: multerStorage,
     fileFilter: multerFilter,
-  });
+});
 const app=express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -69,14 +68,13 @@ app.get("/sell",function(req,res){
     res.render("sell",{name:fname,id:id});
 })
 app.get("/form",function(req,res){
-    res.render("sellForm",{name:fname,id:id,products:products});})
+    res.render("sellForm",{name:fname,id:id,products:products});
+})
 app.post("/form",upload.single('pic'), function(req,res){
-
     var n=req.body.title;
     var desc=req.body.desc;
     var price=req.body.price;
     var oprice=req.body.oprice;
-    
     if(id==0){
         console.log("not logged in");
         res.redirect("/login")
@@ -99,16 +97,14 @@ app.post("/form",upload.single('pic'), function(req,res){
         }
         res.render("sellForm",{name:fname,id:id,products:products});
     }
-    })
+})
 app.get("/register",function(req,res){
     if(id!=0){
         res.render("home",{id:0,name:""})
     }
     res.render("register",{msg:"Registration"});
 })
-
 app.post("/register",function(req,res){
-    
     fname=req.body.fname;
     var sname=req.body.sname;
     var mobile=req.body.mobile_no;
@@ -146,7 +142,6 @@ app.post("/login",function(req,res){
     con.query("SELECT * from user where email=? AND password=?",[email,password],function(err,result){
         if(err) throw err;
         if(result.length==1){
-            console.log(result);
             fname=result[0].fName;
             id=result[0].id;
             res.render("home",{name:fname,id:id,products:products});
@@ -163,8 +158,24 @@ app.get("/buy",function(req,res){
         all=result;
         res.render("buyer",{all:all,name:fname,id:id});
     })
-    
 })
 app.post("/buy",function(req,res){
-    console.log(req.body);
+    if(id==0){
+        console.log("not logged in");
+        res.redirect("/login")
+    }
+    else{
+        var item=req.body.wish;
+        con.query("INSERT INTO wishlist(listingId,userId) VALUES?",[[[item,id]]],function(err,result){
+            if (err) throw err;
+            console.log(result);
+        });
+    }
+})
+app.get("/profile",(req,res)=>{
+    con.query("SELECT * from listing INNER JOIN wishlist ON wishlist.listingId=listing.listingID INNER JOIN user on user.id=?",[id],function(req,result){
+        console.log(result);
+        res.render("profile",{name:fname,wish:result});
+    })
+    
 })

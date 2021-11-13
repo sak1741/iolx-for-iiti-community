@@ -1,22 +1,91 @@
-body{
-    background-color: white;
+.banner{
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url(../image/istockphoto-1166843563-170667a.jpg);
+    background-size:cover; 
+    background-position:center ;
+
 }
 
-.iolx{
-    color:#DC143C;
-    font-size: 50px;
-    margin-top: 10px;
-    margin-left: 10px;
-    margin-bottom: 0px;
-    /* color:#F5DEB3; */
-    /* font-family: 'Italianno', cursive; */
-    font-family: 'Rampart One', cursive;
+.navbar{
+    width: 85%;
+    margin: auto;
+    padding: 35px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo{
+    width: 120px;
+    cursor: pointer;
+
+}
+.navbar ul li{
+    list-style: none;
+    display: inline-block;
+    margin:0 20px;
+    position: relative;
+}
+.navbar ul li a{
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+}
+.navbar ul li::after{
+    content: '';
+    height: 3px;
+    width:0;
+    background:#009688;
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    transition:0.5s;
+  
+}
+.navbar ul li:hover::after{
+width: 100%;
+}   .content{
+    width:100%;
+    position:absolute;
     
+    top:50%;
+    transform: translateY(-50%);
+    text-align: center;
+    
+    color:#fff; 
+} 
+.content{
+    width:100%;
+    position:absolute;
+    top:50%;
+    transform: translateY(-50%);
+    text-align: center;
+} 
+.content h1{
+    font-size: 70px;
+    margin-top: 80px;
 }
-h3{
-    font-weight: bold;
-    text-shadow: 0px 0px 2px red;
+    
+.content p{
+    margin:20px auto;
+    font-weight: 100;
+    /* font-size: 16px; */
+    line-height: 25px;
 }
-li{
-    color: #000000;
+span{
+    background:#009688;
+    height: 100%;
+    width: 0;
+    border-radius: 25px;
+    position: absolute;
+    left:0;
+    bottom:0;
+    z-index: -1;
+    transition: 0.5s;
+}
+button:hover span{
+    width: 100%;
+}
+button:hover{
+     border:none;
 }
