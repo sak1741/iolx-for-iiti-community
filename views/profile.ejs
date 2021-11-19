@@ -42,13 +42,22 @@
           <div class="card-body">
             <h5 class="card-title">Hey <%=name%> welcome back</h5>
             <p class="card-text">Here you can see your goods you have added to your wishlist.</p>
-            <!-- <a href="#" class="btn btn-primary">Go Somewhere</a> -->
             <div>
-                <button type="button"><span></span>LIST HERE</button>
                 <%for(var i=0;i<wish.length;i++){%>
                 <li><%=wish[i].productName%></li>
                 <%}%>
             </div>
+          </div>
+        </div>
+        <div class="card text-center" style="margin-top: 5px;">
+          <div class="card-body">
+            <h5 class="card-title">Here you can see your goods you want to sell.</h5>
+            <form action="/profile" method="post"><div>
+              <%for(var i=0;i<sell.length;i++){%>
+                <li><%=sell[i].productName%></li><button type="submit" name="sold" value=<%=sell[i].listingID%>>Sold</button>
+                <%}%>
+            </div></form>
+            
           </div>
           <div class="card-footer text-muted">
             Node MySQL - Project
@@ -56,8 +65,6 @@
         </div>
       </div>
     </div>
-    
-
   </div>
 
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

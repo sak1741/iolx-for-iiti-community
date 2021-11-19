@@ -35,12 +35,12 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <% var n=all.length;%>
                 <% for(var i=0;i<n;i++){%>
-                    <div class="col">
-                        <div class="card shadow-sm">
-                          <%var path= "files/"+all[i].path%>
-                          <img src=<%=path%> alt=<%path%>>
+                  <div class="col card">
+                  
+                    <%var path= "files/"+all[i].path%>
+                          <img src=<%=path%> alt=<%=path%>>
                           <div class="card-body">
-                            <h4 class="card-title"><%=all[i].productName%></h3>
+                            <h4 class="card-title"><%=all[i].productName%></h4>
                             <p class="card-text">
                                 <p><%=all[i].details%></p>
                                 <h5>Seller: <%=all[i].fName +" "+all[i].sName%></h5>
@@ -52,12 +52,18 @@
                             <div class="d-flex justify-content-between align-items-center">
                               <div class="btn-group">
                                 <form action="/buy" method="post">
+                                  <% if(all[i].buyerID!=null){%>
+                                    <h1>Already sold</h1>
+                                    <%}else{%>
+                                      <button class="btn btn-sm btn-outline-secondary"> Chat with owner</button>
+                                      <%}%>
                                 <button type="submit" class="btn btn-sm btn-outline-secondary" name="wish" value= <%=all[i].listingID%> >Add to wish list</button>
                                 </form>
                               </div>
                             </div>
                           </div>
-                        </div>
+                          
+                        
                       </div>
                 <%}%>
             </div>

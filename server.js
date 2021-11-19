@@ -155,6 +155,7 @@ app.get("/buy",function(req,res){
     var all=[];
     con.query("SELECT *FROM listing INNER JOIN user ON listing.sellerID=user.id INNER JOIN product_image ON listing.listingID=product_image.listingID;",function(err,result){
         if(err) throw err;
+        console.log(result);
         all=result;
         res.render("buyer",{all:all,name:fname,id:id});
     })
@@ -174,10 +175,29 @@ app.post("/buy",function(req,res){
 })
 app.get("/profile",(req,res)=>{
     con.query("SELECT * from listing INNER JOIN wishlist ON wishlist.listingId=listing.listingID INNER JOIN user on user.id=?",[id],function(req,result){
-        console.log(result);
-        res.render("profile",{name:fname,wish:result});
+        con.query("SELECT * from listing INNER JOIN user ON user.id=listing.sellerID ",function(err,resu){
+            res.render("profile",{name:fname,wish:result,sell:resu});
+        })
     })
     
 })
-
-svg2312/RandomIntro
+app.post("/profile",function(req,res){
+    req.app.set('product', req.body.sold);
+    res.redirect("/sold");
+})
+app.get("/sold",function(req,res){
+    req.app.set('product',req.app.get('product'));
+    res.render("sold");
+})
+app.post("/sold",function(req,res){
+    var product=req.app.get('product');
+    var email=req.body.email;
+    con.query("SELECT id from user where email=?",email,function(err,res){
+        if(err) throw "no user exists";
+        console.log(product);
+        con.query("UPDATE listing SET buyerID=? WHERE listingID=?",[[res[0].id],[product]],function(err,res){
+            if(err) throw err;
+            console.log(res);
+        })
+    })
+})
