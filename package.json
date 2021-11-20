@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "bad-words": "^3.0.4",
     "body-parser": "^1.19.0",
     "clone-response": "^1.0.2",
     "debug": "^2.6.9",
@@ -33,7 +34,8 @@
     "mysql2": "^2.3.2",
     "negotiator": "^0.6.2",
     "nodemon": "^2.0.15",
-    "socket.io": "^4.4.0"
+    "socket.io": "^4.4.0",
+    "badword": "^0.0.1"
   },
   "devDependencies": {},
   "scripts": {

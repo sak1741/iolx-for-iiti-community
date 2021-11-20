@@ -1,7 +1,9 @@
 const { json } = require("body-parser");
 const e = require("express");
 const express=require("express");
+
 const multer  = require('multer')
+
 const multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, "public");
@@ -24,9 +26,12 @@ const upload = multer({
     fileFilter: multerFilter,
 });
 const app=express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const port = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.listen(3000,()=>{
+http.listen(port,()=>{
     console.log("Server online");
 })
 app.set('view engine', 'ejs');
@@ -34,7 +39,7 @@ const mysql=require("mysql2");
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "PSALG@2020"
+    password: "t3stf!le"
   });
 con.connect(function(err) {
     if (err) throw err;
@@ -155,7 +160,6 @@ app.get("/buy",function(req,res){
     var all=[];
     con.query("SELECT *FROM listing INNER JOIN user ON listing.sellerID=user.id INNER JOIN product_image ON listing.listingID=product_image.listingID;",function(err,result){
         if(err) throw err;
-        console.log(result);
         all=result;
         res.render("buyer",{all:all,name:fname,id:id});
     })
@@ -165,22 +169,33 @@ app.post("/buy",function(req,res){
         console.log("not logged in");
         res.redirect("/login")
     }
+    else if(req.body.chat=="1"){
+        console.log("chat");
+        res.redirect('/chat');
+    }
     else{
         var item=req.body.wish;
         con.query("INSERT INTO wishlist(listingId,userId) VALUES?",[[[item,id]]],function(err,result){
             if (err) throw err;
-            console.log(result);
         });
     }
 })
 app.get("/profile",(req,res)=>{
-    con.query("SELECT * from listing INNER JOIN wishlist ON wishlist.listingId=listing.listingID INNER JOIN user on user.id=?",[id],function(req,result){
-        con.query("SELECT * from listing INNER JOIN user ON user.id=listing.sellerID ",function(err,resu){
-            res.render("profile",{name:fname,wish:result,sell:resu});
-        })
-    })
-    
-})
+    if(id) {
+        con.query("SELECT * from user WHERE id=?", [id], (err, userResult) => {
+            console.log(userResult);
+            con.query("SELECT * from listing INNER JOIN wishlist ON wishlist.listingId=listing.listingID INNER JOIN user on user.id=?",[id],function(req,result){
+                con.query("SELECT * from listing INNER JOIN user ON user.id=listing.sellerID ",function(err,resu){
+                    res.render("profile",{name:fname,id:id,user:userResult,wish:result,sell:resu});
+                })
+            })
+        })  
+    }
+    else {
+        res.redirect("/login");
+    }
+});
+
 app.post("/profile",function(req,res){
     req.app.set('product', req.body.sold);
     res.redirect("/sold");
@@ -194,6 +209,7 @@ app.post("/sold",function(req,res){
     var email=req.body.email;
     con.query("SELECT id from user where email=?",email,function(err,res){
         if(err) throw "no user exists";
+        console.log(res);
         console.log(product);
         con.query("UPDATE listing SET buyerID=? WHERE listingID=?",[[res[0].id],[product]],function(err,res){
             if(err) throw err;
@@ -201,3 +217,52 @@ app.post("/sold",function(req,res){
         })
     })
 })
+app.get("/chat",function(req,res){
+    // req.app.set('product',req.app.get('product'));
+    res.render("chat");
+})
+
+io.on('connection', (socket) => {
+    socket.on('chat message', msg => {
+      io.emit('chat message', msg);
+    });
+  });
+
+app.get("/contact",function(req,res){
+    // res.sendFile(__dirname+"/contact.html");
+    res.render("contact", {name:fname, id:id});
+});
+
+app.post("/contact",function(req,res){
+    let password=req.body.password
+    let email=req.body.email;
+    let subject=req.body.subject;
+    let text=req.body.text;
+    console.log(req.body);
+    let transporter=nodemailer.createTransport({
+        service:"hotmail",
+        auth: {
+            user:email,
+            pass:password
+        }
+    });
+ 
+    const options = {
+        from:email,
+        to:"cse200001041@iiti.ac.in",
+        subject:req.body.subject,
+        text:req.body.text
+    };
+
+    transporter.sendMail(options, function(err,info){
+        if(err) {
+            console.log(err);
+            res.send("Error Try again")
+        }
+        else {
+            console.log("Sent:"+info.response);
+            res.send("Email sent");
+        }
+    });
+ 
+});

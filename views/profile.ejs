@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="css/profile.css">
 </head>
 <body>
-    <div class="navbar">
+    <!-- <div class="navbar">
         <img src="image/iolx (2) (1).png" class="logo">
         <ul>
             <li><a href="/">Home</a></li>
@@ -17,7 +17,8 @@
             <li><a href="/sell">Seller</a></li>
             <li><a href="">Contact Us</a></li>
         </ul>
-    </div>
+    </div> -->
+    <%-include("nav")-%>
 
   <div class="container">
     <div class="row">
@@ -27,8 +28,8 @@
             <img src="image/avatar.png" class="avatar" alt="user profile picture"/>
           </div>
           <div class="card-body">
-            <h5 class="card-title"><%=name%> <%=wish[0].sName%></h5>
-            <p class="card-text">Address: <%=wish[0].address%><br>Phone No.: <%=wish[0].phoneNo%><br><%=wish[0].email%></p>
+            <h5 class="card-title"><%=name%> <%=user[0].sName%></h5>
+            <p class="card-text">Address: <%=user[0].address%><br>Phone No.: <%=user[0].phoneNo%><br><%=user[0].email%></p>
           <br>
           </div>
         </div>
@@ -43,8 +44,12 @@
             <h5 class="card-title">Hey <%=name%> welcome back</h5>
             <p class="card-text">Here you can see your goods you have added to your wishlist.</p>
             <div>
-                <%for(var i=0;i<wish.length;i++){%>
-                <li><%=wish[i].productName%></li>
+                <%if(wish.length>0){%>
+                  <%for(var i=0;i<wish.length;i++){%>
+                  <li><%=wish[i].productName%></li>
+                  <%}%>
+                <%}else{%>
+                  <em>No goods in wishlist</em>
                 <%}%>
             </div>
           </div>
@@ -53,8 +58,12 @@
           <div class="card-body">
             <h5 class="card-title">Here you can see your goods you want to sell.</h5>
             <form action="/profile" method="post"><div>
+              <%if(wish.length>0){%>
               <%for(var i=0;i<sell.length;i++){%>
                 <li><%=sell[i].productName%></li><button type="submit" name="sold" value=<%=sell[i].listingID%>>Sold</button>
+                <%}%>
+                <%}else{%>
+                  <em>No goods listed for selling</em>
                 <%}%>
             </div></form>
             
